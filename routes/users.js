@@ -1,0 +1,11 @@
+const express = require('express')
+const router = express.Router()
+const {success,error,logout} = require('../controller/auth')
+const {getAllUsers} = require('../controller/users')
+const loggedIn = require('../middleware/loggedIn')
+router.route('/success').get(loggedIn,success)
+router.route('/error').get(error)
+router.route('/logout').get(logout)
+router.route('/').get(getAllUsers)
+router.route('/:id').get(getAllUsers)
+module.exports = router
