@@ -1,17 +1,15 @@
-const { db } = require('../db/connect')
+const User = require('../models/users')
 const getAllUsers = async (req,res) => {
-    const sqlQuery = "SELECT * FROM users";
-
-    const query = await db.query(sqlQuery);
-    
-    console.log(sqlQuery)
-    res.status(200).json({ query })
+    const users = await User.findAll()
+    res.status(200).json({ users, nbhits: users.length })
 }
 const getUser = async (req,res) => {
     const { id } = req.params
-    const sqlQuery = "SELECT * FROM users WHERE id=" + id;
-
-    const query = await db.query(sqlQuery);
-    res.status(200).json({ query })
+    const users = await User.findOne({
+        where: {
+            id 
+        }
+    })
+    res.status(200).json({ users })
 }
 module.exports = {getAllUsers,getUser}
