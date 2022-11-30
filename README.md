@@ -2,6 +2,11 @@
 
 Users are authenticated using Oauth2.0 and Google
 stripe was used for the payment service
+
+
 Below is the link to the api documentation 
+
+
+
 https://documenter.getpostman.com/view/18358758/2s8YszQBAT
 
