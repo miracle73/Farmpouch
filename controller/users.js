@@ -1,4 +1,4 @@
-const User = require('../models/users')
+const {User} = require('../models/users')
 const getAllUsers = async (req,res) => {
     const users = await User.findAll()
     res.status(200).json({ users, nbhits: users.length })
