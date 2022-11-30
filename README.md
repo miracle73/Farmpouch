@@ -1,4 +1,4 @@
-# Farmpouch is a platform that makes user investments platform that makes it easy for anyone to Invest in a particular farm. 
+# Farmpouch is a platform that makes it easy for users to Invest in a particular farm project. 
 
 Users are authenticated using Oauth2.0 and Google.
 Stripe was used for the payment service
