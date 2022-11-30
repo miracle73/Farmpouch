@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const errorHandler = require('../error/customError')
-const User = require('../models/users')
+const bcrypt = require('bcrypt')
+const {User} = require('../models/users')
 var users
 const success = async (req, res) => {
     const data = {
@@ -9,8 +10,8 @@ const success = async (req, res) => {
         email_verified: req.user._json.email_verified
     };
     users = await User.create(data)
-    console.log(req.user.id)
-    res.status(200).json({ users });
+    const { name, email, email_verified, role } = users
+    res.status(200).json({ users: { name, email, email_verified, role } });
     // return res.status(200).redirect('/api/v1/users/login');
 }
 const error = async (req, res) => {
@@ -28,24 +29,54 @@ const login = async (req, res) => {
     const password = req.body.password
     const token = jwt.sign({ username, password }, process.env.JWT_SECRET, { expiresIn: '1d' })
     if (users) {
+      
+            
         const secondUser = await User.findOne({
             where: {
                 id: users.id
             }
         })
-           if(secondUser.username === null || secondUser.password === null ) {
+        users = undefined;
+        if (secondUser.username === null || secondUser.password === null) {
             const data = { username, password }
             const thirdUser = await User.update(data, {
                 where: {
                     id: secondUser.id
                 }
             })
-            console.log(secondUser.id)
-            res.status(200).json({ msg: 'Successfully signed in for the first time', token})
-            
-           }
+            const fourthUser = await User.findOne({
+                where: {
+                    id: secondUser.id
+                }
+            })
+            const salt = await bcrypt.genSalt(10)
+            const hashedPassword = await bcrypt.hash(fourthUser.password, 10)
+            fourthUser.password = hashedPassword
+            console.log(fourthUser.password)
+            fourthUser.save()
+            res.status(200).json({ msg: 'Successfully signed in for the first time', token })
+
+        }
+    } else {
+        const username = req.body.username
+        const password = req.body.password
+        const token = jwt.sign({ username, password }, process.env.JWT_SECRET, { expiresIn: '1d' })
+        const thirdUser = await User.findOne({
+            where: {
+                username
+            }
+        })
+        const matched = await bcrypt.compare(password,thirdUser.password)
+        console.log(thirdUser.password)
+        if(matched){
+        res.status(200).json({ msg: 'Successfully signed in', token })
+        } else {
+            res.status(200).json({ msg: 'Not signed in' })
+        }
+
+        // console.log('here')
     }
-    res.status(200).json({ msg: 'Successfully signed in' , token})
+
 
 }
 module.exports = { success, error, logout, login }

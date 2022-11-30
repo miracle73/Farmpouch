@@ -29,9 +29,24 @@ const User = sequelize.define("application_users", {
 
   }
 });
+
+const Wallet = sequelize.define("user_wallets", {
+  balance: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  },
+ 
+);
+User.hasOne(Wallet);
+Wallet.belongsTo(User);
 sequelize.sync().then(() => {
     console.log('Database table created successfully!');
  }).catch((error) => {
     console.error('Unable to create table : ', error);
  });
- module.exports = User
+ module.exports = {User,Wallet}

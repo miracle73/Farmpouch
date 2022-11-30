@@ -16,7 +16,11 @@ const FarmInvestment = sequelize.define("farm_investments", {
    amount_per_unit: {
      type: DataTypes.INTEGER,
      allowNull: false
-   }
+   },
+   status: {
+    type: DataTypes.STRING,
+    defaultValue: "non-available",
+  }
 });
 sequelize.sync().then(() => {
     console.log('Datatable table created successfully!');

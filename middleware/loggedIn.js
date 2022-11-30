@@ -1,5 +1,5 @@
 const errorHandler = require('../error/customError')
-const User = require('../models/users')
+const {User} = require('../models/users')
 const isLoggedIn = (req, res, next) => {
     const log = req.user ? next() : res.sendStatus(401);
     return log
