@@ -15,6 +15,7 @@ const sequelize = require('./db/connect')
 const router = require('./routes/main')
 const secondRouter = require('./routes/users')
 const thirdRouter = require('./routes/payment')
+const fourthRouter = require('./routes/user')
 const notFound = require('./middleware/not-found')
 const errorHandler = require('./middleware/error-handler')
 const passport = require('passport');
@@ -31,6 +32,7 @@ app.get('/auth/google/callback',
 app.use('/api/v1/users', secondRouter)
 app.use('/api/v1/farms',router)
 app.use('/api/v1/payments', thirdRouter)
+app.use('/api/v1/user', fourthRouter)
 app.post('/api/v1/farms/get',(req,res) => {
     console.log(req.body)
     res.json({here: 'got it'})

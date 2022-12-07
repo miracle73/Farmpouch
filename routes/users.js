@@ -1,14 +1,15 @@
 const express = require('express')
 const router = express.Router()
 const {success,error,logout, login} = require('../controller/auth')
-const {getAllUsers, getUser} = require('../controller/users')
+const {getAllUsers, getUser, dashboard} = require('../controller/users')
 const {isLoggedIn} = require('../middleware/loggedIn')
 const {adminCheck} = require('../middleware/loggedIn')
 const authenticationMiddleware = require('../middleware/jwtauth')
 router.route('/success').get(isLoggedIn,success)
 router.route('/error').get(error)
 router.route('/logout').get(logout)
-router.route('/').get([authenticationMiddleware,adminCheck],getAllUsers)
-router.route('/:id').get(authenticationMiddleware,adminCheck,getUser)
+router.route('/').get(authenticationMiddleware,getAllUsers)
+router.route('/:id').get(authenticationMiddleware,getUser)
 router.route('/login').post(login)
+
 module.exports = router

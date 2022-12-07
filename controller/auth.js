@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 const errorHandler = require('../error/customError')
-const bcrypt = require('bcrypt')
 const {User} = require('../models/users')
+const {Wallet} = require('../models/users')
 var users
 const success = async (req, res) => {
     const data = {
@@ -39,7 +40,10 @@ const login = async (req, res) => {
         users = undefined;
         if (secondUser.username === null || secondUser.password === null) {
             const data = { username, password }
-            const thirdUser = await User.update(data, {
+            const salt = await bcrypt.genSalt(10)
+            const hashedPassword = await bcrypt.hash(password, salt)
+            const data2 = {username, password: hashedPassword}
+            const thirdUser = await User.update(data2, {
                 where: {
                     id: secondUser.id
                 }
@@ -49,11 +53,9 @@ const login = async (req, res) => {
                     id: secondUser.id
                 }
             })
-            const salt = await bcrypt.genSalt(10)
-            const hashedPassword = await bcrypt.hash(fourthUser.password, 10)
-            fourthUser.password = hashedPassword
+        
             console.log(fourthUser.password)
-            fourthUser.save()
+            const wallet = await Wallet.create({balance: 0,username:data.username, applicationUserId: fourthUser.id})
             res.status(200).json({ msg: 'Successfully signed in for the first time', token })
 
         }
