@@ -76,7 +76,7 @@ const login = async (req, res) => {
             res.status(200).json({ msg: 'Not signed in' })
         }
 
-        // console.log('here')
+        console.log('here')
     }
 
 
