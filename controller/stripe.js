@@ -63,7 +63,7 @@ const payment = async (req, res) => {
                 amount_per_unit: farms.amount_per_unit,
                 number_of_units
             })
-            res.json({ msg: 'transaction created successfully', clientSecret: mainPayment })
+            res.json({ msg: 'transaction created successfully', number_of_units, Farm_investment: farms.name, clientSecret: mainPayment })
         } else {
             throw new errorHandler(`Sorry you have insufficient balance in your account to pay for this farm investment`, 401)
         }

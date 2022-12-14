@@ -1,4 +1,5 @@
 const { User } = require('../models/users')
+const {StatusCodes} = require('http-status-codes')
 const Transaction = require('../models/transaction')
 const getAllUsers = async (req, res) => {
     const users = await User.findAll()
@@ -44,6 +45,6 @@ const dashboard = async (req, res) => {
          farms_invested: farmers,
          total_investment: total_count
     }
-    res.status(200).json({ profile })
+    res.status(StatusCodes.OK).json({ profile })
 }
 module.exports = { getAllUsers, getUser, dashboard }
