@@ -3,7 +3,8 @@ const sequelize = require('../db/connect')
 const Transaction = sequelize.define("payment_transactions", {
    user: {
      type: DataTypes.STRING,
-     allowNull: false
+     allowNull: false,
+     
    },
    farm_investment: {
      type: DataTypes.STRING,
